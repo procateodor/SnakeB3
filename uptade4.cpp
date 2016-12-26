@@ -11,6 +11,7 @@ const int height = 20;
 int score, score2;
 int tailx[100], taily[100], tail2x[100], tail2y[100];
 int ntail, ntail2;
+int okleft, okright, okup, okdown, okleft2, okright2, okup2, okdown2;
 
 struct fruct {
     int x;
@@ -22,12 +23,20 @@ struct snake {
     int y;
 };
 
+struct wall {
+    int x;
+    int y;
+};
+
 enum eDirection { STOP = 0, LEFT, RIGHT, UP, DOWN };
 eDirection dir;
 eDirection dir2;
 
 snake sarpe, sarpe2;
 fruct fruit;
+wall v1, v2, v3, v4, v5, v6, v7, v8, v9, v10;
+
+long long nrafisari;
 
 void setup() {
     gameOver = false;
@@ -108,6 +117,26 @@ void draw2() {
                 cout << 'O';
             else if (i == fruit.y && j == fruit.x)
                 cout << "F";
+            else if (i == v1.y && j == v1.x && v1.y != 0 && v1.x != 0)
+                cout << "X";
+            else if (i == v2.y && j == v2.x && v2.y != 0 && v2.x != 0)
+                cout << "X";
+            else if (i == v3.y && j == v3.x && v3.y != 0 && v3.x != 0)
+                cout << "X";
+            else if (i == v4.y && j == v4.x && v4.y != 0 && v4.x != 0)
+                cout << "X";
+            else if (i == v5.y && j == v5.x && v5.y != 0 && v5.x != 0)
+                cout << "X";
+            else if (i == v6.y && j == v6.x && v6.y != 0 && v6.x != 0)
+                cout << "X";
+            else if (i == v7.y && j == v7.x && v7.y != 0 && v7.x != 0)
+                cout << "X";
+            else if (i == v8.y && j == v8.x && v8.y != 0 && v8.x != 0)
+                cout << "X";
+            else if (i == v9.y && j == v9.x && v9.y != 0 && v9.x != 0)
+                cout << "X";
+            else if (i == v10.y && j == v10.x && v10.y != 0 && v10.x != 0)
+                cout << "X";
             else {
                 
                 bool print = false;
@@ -142,7 +171,9 @@ void draw2() {
     for (int i = 0; i < width + 2; i++)
         cout << ".";
     cout << endl;
-    cout << "Score1: " << score <<"                        "<<"Score2: "<<score2<< endl;
+    cout << "Score1: " << score << "                        " << "Score2: " << score2 << endl;
+    
+    nrafisari++;
 }
 
 void input() {
@@ -215,11 +246,12 @@ void logic() {
     //gameOver = true;
     if (sarpe.x >= width) sarpe.x = 0; else if (sarpe.x < 0)	sarpe.x = width - 1;
     if (sarpe.y >= height) sarpe.y = 0; else if (sarpe.y < 0)	sarpe.y = height - 1;
+    
     for (int i = 0; i < ntail; i++)
         if (tailx[i] == sarpe.x && taily[i] == sarpe.y)
             gameOver = true;
+    
     if (sarpe.x == fruit.x && sarpe.y == fruit.y) {
-        
         score++;
         fruit.x = rand() % width;
         fruit.y = rand() % height;
@@ -260,16 +292,44 @@ void logic2() {
     switch (dir)
     {
         case LEFT:
-            sarpe.x--;
+            if (okright == 0) {
+                sarpe.x--;
+                okleft = 1;
+                okright = 0;
+                okdown = 0;
+                okup = 0;
+            }
+            else sarpe.x++;
             break;
         case RIGHT:
-            sarpe.x++;
+            if (okleft==0) {
+                sarpe.x++;
+                okright = 1;
+                okleft = 0;
+                okdown = 0;
+                okup = 0;
+            }
+            else sarpe.x--;
             break;
         case UP:
-            sarpe.y--;
+            if (okdown == 0) {
+                sarpe.y--;
+                okup = 1;
+                okleft = 0;
+                okdown = 0;
+                okright = 0;
+            }
+            else sarpe.y++;
             break;
         case DOWN:
-            sarpe.y++;
+            if (okup == 0) {
+                sarpe.y++;
+                okdown = 1;
+                okleft = 0;
+                okright= 0;
+                okup = 0;
+            }
+            else sarpe.y--;
             break;
         default:
             break;
@@ -278,16 +338,44 @@ void logic2() {
     switch (dir2)
     {
         case LEFT:
-            sarpe2.x--;
+            if (okright2 == 0) {
+                sarpe2.x--;
+                okleft2 = 1;
+                okright2 = 0;
+                okdown2 = 0;
+                okup2 = 0;
+            }
+            else sarpe2.x++;
             break;
         case RIGHT:
-            sarpe2.x++;
+            if (okleft2 == 0) {
+                sarpe2.x++;
+                okright2 = 1;
+                okleft2 = 0;
+                okdown2 = 0;
+                okup2 = 0;
+            }
+            else sarpe2.x--;
             break;
         case UP:
-            sarpe2.y--;
+            if (okdown2 == 0) {
+                sarpe2.y--;
+                okup2 = 1;
+                okleft2 = 0;
+                okdown2 = 0;
+                okright2 = 0;
+            }
+            else sarpe2.y++;
             break;
         case DOWN:
-            sarpe2.y++;
+            if (okup2 == 0) {
+                sarpe2.y++;
+                okdown2 = 1;
+                okleft2 = 0;
+                okright2 = 0;
+                okup2 = 0;
+            }
+            else sarpe2.y--;
             break;
         default:
             break;
@@ -302,6 +390,14 @@ void logic2() {
     if (sarpe2.y >= height) sarpe2.y = 0; else if (sarpe2.y < 0)	sarpe2.y = height - 1;
     
     if (sarpe.x == sarpe2.x && sarpe.y == sarpe2.y)
+        gameOver = true;
+    
+    if (sarpe.x == v1.x && sarpe.y == v1.y || sarpe.x == v2.x && sarpe.y == v2.y || sarpe.x == v3.x && sarpe.y == v3.y || sarpe.x == v4.x && sarpe.y == v4.y || sarpe.x == v5.x && sarpe.y == v5.y
+        || sarpe.x == v6.x && sarpe.y == v6.y || sarpe.x == v7.x && sarpe.y == v7.y || sarpe.x == v8.x && sarpe.y == v8.y || sarpe.x == v9.x && sarpe.y == v9.y || sarpe.x == v10.x && sarpe.y == v10.y)
+        gameOver = true;
+    
+    if (sarpe2.x == v1.x && sarpe2.y == v1.y || sarpe2.x == v2.x && sarpe2.y == v2.y || sarpe2.x == v3.x && sarpe2.y == v3.y || sarpe2.x == v4.x && sarpe2.y == v4.y || sarpe2.x == v5.x && sarpe2.y == v5.y
+        || sarpe2.x == v6.x && sarpe2.y == v6.y || sarpe2.x == v7.x && sarpe2.y == v7.y || sarpe2.x == v8.x && sarpe2.y == v8.y || sarpe2.x == v9.x && sarpe2.y == v9.y || sarpe2.x == v10.x && sarpe2.y == v10.y)
         gameOver = true;
     
     for (int i = 0; i < ntail; i++)
@@ -320,6 +416,8 @@ void logic2() {
         if (tail2x[j] == sarpe.x && tail2y[j] == sarpe.y)
             gameOver = true;
     
+    
+    
     if (sarpe.x == fruit.x && sarpe.y == fruit.y) {
         
         score++;
@@ -337,10 +435,63 @@ void logic2() {
     }
 }
 
+void coord() {
+    v1.x = rand() % width;
+    v1.y = rand() % height;
+    v2.x = rand() % width;
+    v2.y = rand() % height;
+    v3.x = rand() % width;
+    v3.y = rand() % height;
+    v4.x = rand() % width;
+    v4.y = rand() % height;
+    v5.x = rand() % width;
+    v5.y = rand() % height;
+    v6.x = rand() % width;
+    v6.y = rand() % height;
+    v7.x = rand() % width;
+    v7.y = rand() % height;
+    v8.x = rand() % width;
+    v8.y = rand() % height;
+    v9.x = rand() % width;
+    v9.y = rand() % height;
+    v10.x = rand() % width;
+    v10.y = rand() % height;
+}
+
+void walls(){
+    if (nrafisari == 30)
+        coord();
+    if (nrafisari == 50) {
+        v1.x = 0;
+        v1.y = 0;
+        v2.x = 0;
+        v2.y = 0;
+        v3.x = 0;
+        v3.y = 0;
+        v4.x = 0;
+        v4.y = 0;
+        v5.x = 0;
+        v5.y = 0;
+        v6.x = 0;
+        v6.y = 0;
+        v7.x = 0;
+        v7.y = 0;
+        v8.x = 0;
+        v8.y = 0;
+        v9.x = 0;
+        v9.y = 0;
+        v10.x = 0;
+        v10.y = 0;
+        nrafisari = 0;
+    }
+}
+
 int main()
 {
+    
     setup2();
     while (!gameOver) {
+        walls();
         draw2();
         input();
         logic2();
