@@ -55,7 +55,7 @@ struct slow {
 	int y;
 };
 
-struct fast{
+struct fast {
 	int x;
 	int y;
 };
@@ -251,11 +251,11 @@ void clearM2() {
 				setCursorPosition(x, y);
 				cout << "Score1:" << score;
 			}
-			else if (currMat[x][y] == 70) {
+			else if (currMat2[x][y] == 70) {
 				setCursorPosition(x, y);
 				cout << "S";
 			}
-			else if (currMat[x][y] == 71) {
+			else if (currMat2[x][y] == 71) {
 				setCursorPosition(x, y);
 				cout << "Y";
 			}
@@ -272,8 +272,8 @@ void setup() {
 	dir = STOP;
 	sarpe.x = MAX_X / 2;
 	sarpe.y = MAX_Y / 2;
-	fruit.x = rand() % MAX_X;
-	fruit.y = rand() % MAX_Y;
+	fruit.x = rand() % (MAX_X-2);
+	fruit.y = rand() % (MAX_Y-2);
 	if (fruit.x < 1)
 		fruit.x = 1;
 	if (fruit.y < 1)
@@ -547,10 +547,10 @@ void draw2() {
 				currMat2[j][i] = 2;
 			else if (i == slw.y && j == slw.x && slw.y != 0 && slw.x != 0)
 				//cout << "S";
-				currMat[j][i] = 70;
+				currMat2[j][i] = 70;
 			else if (i == fst.y && j == fst.x && fst.y != 0 && fst.x != 0)
 				//cout << "Y";
-				currMat[j][i] = 71;
+				currMat2[j][i] = 71;
 			else if (i == v1.y && j == v1.x)
 				//cout << "X";
 				currMat2[j][i] = 3;
@@ -812,26 +812,14 @@ void logic() {
 
 
 	if (nrAfisareSlw > 800)
-	for (int i = 0; i < ntail + 1; i++)
-		if (tailx[i] == slw.x && taily[i] == slw.y)
-			coordSlw();
+		for (int i = 0; i < ntail + 1; i++)
+			if (tailx[i] == slw.x && taily[i] == slw.y)
+				coordSlw();
 
 	if (nrAfisareFst > 600)
-	for (int i = 0; i < ntail + 1; i++)
-		if (tailx[i] == fst.x && taily[i] == fst.y)
-			coordFst();
-
-	//if (fst.x == fruit.x && fst.y == fruit.y)
-		//coordFst();
-
-	//if (slw.x == fruit.x && slw.y == fruit.y)
-		//coordSlw();
-
-	//if (fst.x == r.x && fst.y == r.y)
-		//coordFst();
-
-	//if (slw.x == r.x && slw.y == r.y)
-	//	coordSlw();
+		for (int i = 0; i < ntail + 1; i++)
+			if (tailx[i] == fst.x && taily[i] == fst.y)
+				coordFst();
 
 
 	if (sarpe.x == slw.x && sarpe.y == slw.y) {
@@ -871,7 +859,7 @@ void logic() {
 		}
 
 	for (int i = 0; i < ntail; i++)
-		if (tailx[i] == r.x && taily[i] == r.y) {
+		while (tailx[i] == r.x && taily[i] == r.y) {
 			r.x = rand() % (MAX_X2 - 3);
 			r.y = rand() % (MAX_Y2 - 3);
 			if (r.x < 1)
@@ -879,6 +867,42 @@ void logic() {
 			if (r.y < 2)
 				r.y = 2;
 		}
+
+	if (slw.x == fruit.x && slw.y == fruit.y) {
+		fruit.x = rand() % (MAX_X2 - 3);
+		fruit.y = rand() % (MAX_Y2 - 3);
+		if (fruit.x < 1)
+			fruit.x = 1;
+		if (fruit.y < 1)
+			fruit.y = 1;
+	}
+
+	if (fst.x == fruit.x && fst.y == fruit.y) {
+		fruit.x = rand() % (MAX_X2 - 3);
+		fruit.y = rand() % (MAX_Y2 - 3);
+		if (fruit.x < 1)
+			fruit.x = 1;
+		if (fruit.y < 1)
+			fruit.y = 1;
+	}
+
+	if (slw.x == r.x && slw.y == r.y && r.x != 0 && r.y!=0) {
+		r.x = rand() % (MAX_X2 - 3);
+		r.y = rand() % (MAX_Y2 - 3);
+		if (r.x < 1)
+			r.x = 2;
+		if (r.y < 2)
+			r.y = 2;
+	}
+
+	if (fst.x == r.x && fst.y == r.y && r.x != 0 && r.y!=0) {
+		r.x = rand() % (MAX_X2 - 3);
+		r.y = rand() % (MAX_Y2 - 3);
+		if (r.x < 1)
+			r.x = 2;
+		if (r.y < 2)
+			r.y = 2;
+	}
 
 	for (int i = 0; i < ntail; i++) {
 		if (tailx[i] == v1.x && taily[i] == v1.y) {
@@ -945,12 +969,12 @@ void logic() {
 	}
 
 	if (r.x == fruit.x && r.y == fruit.y) {
-		r.x = rand() % (MAX_X2 - 3);
-		r.y = rand() % (MAX_Y2 - 3);
-		if (r.x < 1)
-			r.x = 2;
-		if (r.y < 2)
-			r.y = 2;
+		fruit.x = rand() % (MAX_X2 - 3);
+		fruit.y = rand() % (MAX_Y2 - 3);
+		if (fruit.x < 1)
+			fruit.x = 1;
+		if (fruit.y < 1)
+			fruit.y = 1;
 	}
 
 	if (nrafisaritailred == 500) {
@@ -958,14 +982,21 @@ void logic() {
 		nrafisaritailredRepeat = 0;
 	}
 
-	if (nrafisaritailredRepeat == 10 && nrafisaritailred >= 499) {
+	if (nrafisaritailredRepeat == 10 && nrafisaritailred >= 500) {
 		coordTailReduction2();
 		nrafisaritailredRepeat = 0;
 	}
 
+	if (sarpe.x == r.x && sarpe.y == r.y && ntail==0) {
+		score -= 10;
+		nrafisaritailred = 0;
+		r.x = 0;
+		r.y = 0;
+	}
+
 	if (sarpe.x == r.x && sarpe.y == r.y) {
 		score += 2;
-		nrafisaritailred = 499;
+		nrafisaritailred = 0;
 		r.x = 0;
 		r.y = 0;
 		ntail -= 2;
@@ -988,7 +1019,7 @@ void logic() {
 		nrSlow++;
 	}
 	else if (nrFast > 0 && nrFast < 60 && okFast) {
-		Sleep(65);
+		Sleep(55);
 		nrFast++;
 	}
 	else
@@ -1170,41 +1201,77 @@ void logic2() {
 
 	if (nrAfisareSlw > 800) {
 		for (int i = 0; i < ntail + 1; i++)
-			if (tailx[i] == slw.x && taily[i] == slw.y)
+		while (tailx[i] == slw.x && taily[i] == slw.y)
 				coordSlw2();
 
 		for (int i = 0; i < ntail2 + 1; i++)
-			if (tail2x[i] == slw.x && tail2y[i] == slw.y)
+			while (tail2x[i] == slw.x && tail2y[i] == slw.y)
 				coordSlw2();
 	}
 
 	if (nrAfisareFst > 600) {
 		for (int i = 0; i < ntail + 1; i++)
-			if (tailx[i] == fst.x && taily[i] == fst.y)
+			while (tailx[i] == fst.x && taily[i] == fst.y)
 				coordFst2();
 
 		for (int i = 0; i < ntail2 + 1; i++)
-			if (tail2x[i] == fst.x && tail2y[i] == fst.y)
+			while (tail2x[i] == fst.x && tail2y[i] == fst.y)
 				coordFst2();
 	}
 
-	if (fst.x == fruit.x && fst.y == fruit.y)
-		coordFst2();
+	if (fst.x == fruit.x && fst.y == fruit.y) {
+		fruit.x = rand() % (MAX_X2 - 3);
+		fruit.y = rand() % (MAX_Y2 - 3);
+		if (fruit.x < 1)
+			fruit.x = 1;
+		if (fruit.y < 1)
+			fruit.y = 1;
+	}
 
-	if (slw.x == fruit.x && slw.y == fruit.y)
-		coordSlw2();
+	if (slw.x == fruit.x && slw.y == fruit.y) {
+		fruit.x = rand() % (MAX_X2 - 3);
+		fruit.y = rand() % (MAX_Y2 - 3);
+		if (fruit.x < 1)
+			fruit.x = 1;
+		if (fruit.y < 1)
+			fruit.y = 1;
+	}
 
-	if (fst.x == r.x && fst.y == r.y)
-		coordFst2();
+	if (fst.x == r.x && fst.y == r.y && r.x!=0 && r.y!=0) {
+		r.x = rand() % (MAX_X2 - 3);
+		r.y = rand() % (MAX_Y2 - 3);
+		if (r.x < 1)
+			r.x = 2;
+		if (r.y < 1)
+			r.y = 2;
+	}
 
-	if (slw.x == r.x && slw.y == r.y)
-		coordSlw2();
+	if (slw.x == r.x && slw.y == r.y && r.x != 0 && r.y != 0) {
+		r.x = rand() % (MAX_X2 - 3);
+		r.y = rand() % (MAX_Y2 - 3);
+		if (r.x < 1)
+			r.x = 2;
+		if (r.y < 1)
+			r.y = 2;
+	}
 
-	if (fst.x == fk.x && fst.y == fk.y)
-		coordFst2();
+	if (fst.x == fk.x && fst.y == fk.y) {
+		fk.x = rand() % (MAX_X2 - 3);
+		fk.y = rand() % (MAX_Y2 - 3);
+		if (fk.x < 1)
+			fk.x = 3;
+		if (fk.y < 1)
+			fk.y = 3;
+	}
 
-	if (slw.x == fk.x && slw.y == fk.y)
-		coordSlw2();
+	if (slw.x == fk.x && slw.y == fk.y) {
+		fk.x = rand() % (MAX_X2 - 3);
+		fk.y = rand() % (MAX_Y2 - 3);
+		if (fk.x < 1)
+			fk.x = 3;
+		if (fk.y < 1)
+			fk.y = 3;
+	}
 
 	if (sarpe.x == slw.x && sarpe.y == slw.y) {
 		slw.x = 0;
@@ -1319,7 +1386,7 @@ void logic2() {
 		}
 
 	for (int i = 0; i < ntail; i++)
-		if (tailx[i] == r.x && taily[i] == r.y) {
+		while (tailx[i] == r.x && taily[i] == r.y) {
 			r.x = rand() % (MAX_X2 - 3);
 			r.y = rand() % (MAX_Y2 - 3);
 			if (r.x < 1)
@@ -1329,7 +1396,7 @@ void logic2() {
 		}
 
 	for (int i = 0; i < ntail2; i++)
-		if (tail2x[i] == r.x && tail2y[i] == r.y) {
+		while (tail2x[i] == r.x && tail2y[i] == r.y) {
 			r.x = rand() % (MAX_X2 - 3);
 			r.y = rand() % (MAX_Y2 - 3);
 			if (r.x < 1)
@@ -1344,9 +1411,9 @@ void logic2() {
 		fk.x = rand() % (MAX_X2 - 3);
 		fk.y = rand() % (MAX_Y2 - 3);
 		if (fk.x < 1)
-		fk.x = 3;
+			fk.x = 3;
 		if (fk.y < 1)
-		fk.y = 3;
+			fk.y = 3;
 	}
 
 	while (fruit.x == v1.x &&fruit.y == v1.y || fruit.x == v2.x &&fruit.y == v2.y || fruit.x == v3.x &&fruit.y == v3.y || fruit.x == v4.x &&fruit.y == v4.y
@@ -1366,18 +1433,27 @@ void logic2() {
 		nrafisaritailredRepeat = 0;
 	}
 
-	if (nrafisaritailredRepeat == 15 && nrafisaritailred>=300) {
+	if (nrafisaritailredRepeat == 15 && nrafisaritailred >= 300) {
 		coordTailReduction2();
 		nrafisaritailredRepeat = 0;
 	}
 
-	if (r.x == fruit.x && r.y == fruit.y || r.x == fk.x&&r.y == fk.y) {
-		r.x = rand() % (MAX_X2 - 3);
-		r.y = rand() % (MAX_Y2 - 3);
-		if (r.x < 1)
-			r.x = 2;
-		if (r.y < 2)
-			r.y = 2;
+	if (r.x == fruit.x && r.y == fruit.y){
+		fruit.x = rand() % (MAX_X2 - 3);
+		fruit.y = rand() % (MAX_Y2 - 3);
+		if (fruit.x < 1)
+			fruit.x = 1;
+		if (fruit.y < 2)
+			fruit.y = 1;
+	}
+
+	if (r.x == fk.x && r.y == fk.y) {
+		fk.x = rand() % (MAX_X2 - 3);
+		fk.y = rand() % (MAX_Y2 - 3);
+		if (fk.x < 1)
+			fk.x = 3;
+		if (fk.y < 1)
+			fk.y = 3;
 	}
 
 	for (int i = 0; i < ntail; i++) {
@@ -1484,19 +1560,20 @@ void logic2() {
 		}
 	}
 
+	if (sarpe.x == r.x && sarpe.y == r.y && ntail==0) {
+		score -= 10;
+		nrafisaritailred = 0;
+		r.x = 0;
+		r.y = 0;
+	}
+
 	if (sarpe.x == r.x && sarpe.y == r.y) {
 		score += 2;
-		nrafisaritailred = 299;
-		r.x = MAX_X2;
-		r.y = MAX_Y2;
+		nrafisaritailred = 0;
+		r.x = 0;
+		r.y = 0;
 
 		ntail -= 4;
-
-		for (int i = ntail; i >= ntail - 4; i--) {
-			tailx[i] = 0;
-			taily[i] = 0;
-		}
-			
 	}
 
 	if (sarpe.x == fk.x && sarpe.y == fk.y) {
@@ -1505,7 +1582,7 @@ void logic2() {
 		nrafisarifruit = 0;
 		fk.x = rand() % (MAX_X2 - 3);
 		fk.y = rand() % (MAX_Y2 - 3);
-		
+
 		fruit.x = rand() % (MAX_X2 - 3);
 		fruit.y = rand() % (MAX_Y2 - 3);
 
@@ -1520,7 +1597,7 @@ void logic2() {
 
 		ntail++;
 		if (ntail2 > 0)
-		ntail2 += 2;
+			ntail2 += 2;
 	}
 
 	if (sarpe2.x == fk.x && sarpe2.y == fk.y) {
@@ -1544,14 +1621,21 @@ void logic2() {
 
 		ntail2++;
 		if (ntail > 0)
-		ntail += 2;
+			ntail += 2;
+	}
+
+	if (sarpe2.x == r.x && sarpe2.y == r.y && ntail2==0) {
+		score2 -= 10;
+		nrafisaritailred = 299;
+		r.x = 0;
+		r.y = 0;
 	}
 
 	if (sarpe2.x == r.x && sarpe2.y == r.y) {
 		score2 += 2;
 		nrafisaritailred = 299;
-		r.x = MAX_X2;
-		r.y = MAX_Y2;
+		r.x = 0;
+		r.y = 0;
 
 		ntail2 -= 4;
 	}
@@ -1605,7 +1689,7 @@ void logic2() {
 		nrSlow++;
 	}
 	else if (nrFast > 0 && nrFast < 60 && okFast) {
-		Sleep(65);
+		Sleep(55);
 		nrFast++;
 	}
 	else
@@ -1741,7 +1825,7 @@ void coordTailReduction2() {
 }
 
 void tailReduction() {
-	if (nrafisaritailred ==180)
+	if (nrafisaritailred == 180)
 		coordTailReduction();
 }
 
@@ -2040,6 +2124,19 @@ void engine() {
 
 			MoveWindow(console, r.left, r.top, 500, 360, TRUE);
 
+
+			setCursorPosition(MAX_X + 13, MAX_Y - 17);
+			cout << "Move Key:";
+
+			setCursorPosition(MAX_X + 17, MAX_Y - 15);
+			cout << "W";
+
+			setCursorPosition(MAX_X + 15, MAX_Y - 14);
+			cout << "A S D";
+
+			setCursorPosition(MAX_X + 13, MAX_Y - 11);
+			cout << "GOOD LUCK!";
+
 			while (!gameOver) {
 				//wallsSG();
 				//tailReduction();
@@ -2065,6 +2162,27 @@ void engine() {
 			setup2();
 
 			MoveWindow(console, r.left, r.top, 500, 530, TRUE);
+
+			setCursorPosition(MAX_X + 9, MAX_Y - 17);
+			cout << "Move Key Player 1:";
+
+			setCursorPosition(MAX_X + 17, MAX_Y - 15);
+			cout << "W";
+
+			setCursorPosition(MAX_X + 15, MAX_Y - 14);
+			cout << "A S D";
+
+			setCursorPosition(MAX_X + 9, MAX_Y - 11);
+			cout << "Move Key Player 2:";
+
+			setCursorPosition(MAX_X + 17, MAX_Y - 9);
+			cout << "I";
+
+			setCursorPosition(MAX_X + 15, MAX_Y - 8);
+			cout << "J K L";
+
+			setCursorPosition(MAX_X + 13, MAX_Y - 5);
+			cout << "GOOD LUCK!";
 
 			while (!gameOver) {
 				walls();
