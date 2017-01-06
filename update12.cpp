@@ -12,7 +12,7 @@
 
 using namespace std;
 
-bool gameOver;
+bool gameOver, gameOver2, gameOver3;
 int score, score2;
 int tailx[1000], taily[1000], tail2x[1000], tail2y[1000];
 int ntail, ntail2;
@@ -287,6 +287,8 @@ void setup() {
 
 void setup2() {
 	gameOver = false;
+	gameOver2 = false;
+	gameOver3 = false;
 	dir = STOP;
 	dir2 = STOP;
 	sarpe.x = MAX_X2 - 25;
@@ -1163,7 +1165,7 @@ void logic2() {
 	if (sarpe2.y >= MAX_Y2 - 1) sarpe2.y = 1; else if (sarpe2.y < 1)	sarpe2.y = MAX_Y2 - 2;
 
 	if (sarpe.x == sarpe2.x && sarpe.y == sarpe2.y)
-		gameOver = true;
+		gameOver3 = true;
 
 	if (nrwall) {
 		v1.x = MAX_X2;
@@ -1315,7 +1317,7 @@ void logic2() {
 
 	if (sarpe.x == v1.x && sarpe.y == v1.y || sarpe.x == v2.x && sarpe.y == v2.y || sarpe.x == v3.x && sarpe.y == v3.y || sarpe.x == v4.x && sarpe.y == v4.y || sarpe.x == v5.x && sarpe.y == v5.y
 		|| sarpe.x == v6.x && sarpe.y == v6.y || sarpe.x == v7.x && sarpe.y == v7.y || sarpe.x == v8.x && sarpe.y == v8.y || sarpe.x == v9.x && sarpe.y == v9.y || sarpe.x == v10.x && sarpe.y == v10.y)
-		gameOver = true;
+		gameOver2 = true;
 
 	if (sarpe2.x == v1.x && sarpe2.y == v1.y || sarpe2.x == v2.x && sarpe2.y == v2.y || sarpe2.x == v3.x && sarpe2.y == v3.y || sarpe2.x == v4.x && sarpe2.y == v4.y || sarpe2.x == v5.x && sarpe2.y == v5.y
 		|| sarpe2.x == v6.x && sarpe2.y == v6.y || sarpe2.x == v7.x && sarpe2.y == v7.y || sarpe2.x == v8.x && sarpe2.y == v8.y || sarpe2.x == v9.x && sarpe2.y == v9.y || sarpe2.x == v10.x && sarpe2.y == v10.y)
@@ -1323,7 +1325,7 @@ void logic2() {
 
 	for (int i = 0; i < ntail; i++)
 		if (tailx[i] == sarpe.x && taily[i] == sarpe.y)
-			gameOver = true;
+			gameOver2 = true;
 
 	for (int j = 0; j < ntail2; j++)
 		if (tail2x[j] == sarpe2.x && tail2y[j] == sarpe2.y)
@@ -1335,7 +1337,7 @@ void logic2() {
 
 	for (int j = 0; j < ntail2; j++)
 		if (tail2x[j] == sarpe.x && tail2y[j] == sarpe.y)
-			gameOver = true;
+			gameOver2 = true;
 
 	for (int i = 0; i < ntail; i++)
 		if (tailx[i] == fruit.x && taily[i] == fruit.y) {
@@ -2145,6 +2147,16 @@ void engine() {
 				input();
 				logic();
 				//Sleep(70);
+
+				if (gameOver == true) {
+					system("cls");
+					setCursorPosition(MAX_X / 2-2, MAX_Y / 2 - 3);
+					cout << "Ai pierdut. Mult noroc data viitoare!:)";
+
+					setCursorPosition(MAX_X / 2 + 5, MAX_Y2 / 2-6);
+					cout << "Press Any Key To Continue";
+					_getch();
+				}
 			}
 		}
 
@@ -2184,7 +2196,7 @@ void engine() {
 			setCursorPosition(MAX_X + 13, MAX_Y - 5);
 			cout << "GOOD LUCK!";
 
-			while (!gameOver) {
+			while (!gameOver && !gameOver2 && !gameOver3) {
 				walls();
 				//tailReduction2();
 				coordFruit2();
@@ -2193,8 +2205,38 @@ void engine() {
 				input();
 				logic2();
 				//Sleep(100);
+
+				if (gameOver == true) {
+					system("cls");
+					setCursorPosition(MAX_X2 / 2+11, MAX_Y2 / 2-3);
+					cout << "Player 1 Win!";
+
+					setCursorPosition(MAX_X2 / 2+5, MAX_Y2 / 2 );
+					cout << "Press Any Key To Continue";
+					_getch();
+				}
+				else if (gameOver2 == true) {
+					system("cls");
+					setCursorPosition(MAX_X2 / 2 + 11, MAX_Y2 / 2 - 3);
+					cout << "Player 2 Win!";
+
+					setCursorPosition(MAX_X2 / 2 + 5, MAX_Y2 / 2);
+					cout << "Press Any Key To Continue";
+					_getch();
+				}
+				else if (gameOver3 == true) {
+					system("cls");
+					setCursorPosition(MAX_X2 / 2 + 14, MAX_Y2 / 2 - 3);
+					cout << "Remiza";
+
+					setCursorPosition(MAX_X2 / 2 + 5, MAX_Y2 / 2);
+					cout << "Press Any Key To Continue";
+					_getch();
+				}
 			}
 		}
+
+		
 	}
 }
 
